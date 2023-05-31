@@ -1,30 +1,47 @@
-// pages/index.tsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../components/layout';
 import Image from 'next/image';
 import '../styles/globals.css';
+import { useRouter } from 'next/router';
 
 const HomePage = () => {
+  const [zipcode, setZipcode] = useState('');
+  const router = useRouter();
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setZipcode(event.target.value);
+  };
+
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push(`/listings?zipcode=${zipcode}`);
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4">
         <header className="py-5"></header>
 
         <main className="py-5">
-          <div className="mb-5 relative" style={{height: "350px"}}>
+          <div className="mb-5 relative" style={{ height: "350px" }}>
             <Image
               src="/images/icons/family-enjoying-picnic-1737300-0.svg"
               alt="Background"
               layout="fill"
-              // width={500}
-              // height={100} 
               objectFit="cover"
               objectPosition="center 70%"
               quality={100}
             />
             <div className="absolute top-1/2 left-0 w-full">
-              <input type="text" className="w-full p-2 border rounded" placeholder="Enter an Address, City, or Zip Code" />
+              <form onSubmit={handleSearchSubmit}>
+                <input
+                  type="text"
+                  className="text-black w-full p-2 border rounded"
+                  placeholder="Enter an Address, City, or Zip Code"
+                  value={zipcode}
+                  onChange={handleSearchChange}
+                />
+              </form>
             </div>
           </div>
 
